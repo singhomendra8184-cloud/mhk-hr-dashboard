@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   LayoutDashboard, Users, CalendarCheck, ClipboardList,
@@ -65,7 +64,14 @@ export default function App() {
   return (
     <div className={`app ${dark ? "dark" : ""}`}>
       <aside className="sidebar">
-        
+        <div className="brand-logo">
+          <img
+            src="/mhk-tech-inc-logo.png"
+            alt="MHK Tech Inc"
+            className="mhk-logo"
+          />
+        </div>
+
         <p className="tagline">Innovate. Engineer. Transform.</p>
         <nav>
           {[
@@ -75,26 +81,26 @@ export default function App() {
             [Settings, "Settings"]
           ].map(([Icon, label]) => (
             <button key={label} className={`nav-item ${active === label ? "selected" : ""}`} onClick={() => setActive(label)}>
-              <Icon size={19}/><span>{label}</span>
+              <Icon size={19} /><span>{label}</span>
             </button>
           ))}
         </nav>
-        <div className="profile"><Avatar name="Omendra Singh"/><div><b>Omendra Singh</b><small>HR Admin</small><small className="online">● Online</small></div><ChevronRight size={17}/></div>
+        <div className="profile"><Avatar name="Omendra Singh" /><div><b>Omendra Singh</b><small>HR Admin</small><small className="online">● Online</small></div><ChevronRight size={17} /></div>
       </aside>
 
       <main className="main">
         <header className="topbar">
-          <div className="global-search"><Search size={21}/><input placeholder="Search employees, departments, or anything..." value={query} onChange={e => setQuery(e.target.value)}/><kbd>⌘ K</kbd></div>
-          <button className="icon-btn" aria-label="Notifications"><Bell size={20}/><i/></button>
-          <button className="icon-btn" onClick={() => setDark(!dark)} aria-label="Toggle theme">{dark ? <Sun size={20}/> : <Moon size={20}/>}</button>
+          <div className="global-search"><Search size={21} /><input placeholder="Search employees, departments, or anything..." value={query} onChange={e => setQuery(e.target.value)} /><kbd>⌘ K</kbd></div>
+          <button className="icon-btn" aria-label="Notifications"><Bell size={20} /><i /></button>
+          <button className="icon-btn" onClick={() => setDark(!dark)} aria-label="Toggle theme">{dark ? <Sun size={20} /> : <Moon size={20} />}</button>
           <div className="date-card"><b>Fri, 23 Oct 2026</b><span>Have a productive day!</span></div>
-        </header>
+          </header>
 
         <div className="dashboard-grid">
           <div className="center-column">
             <section className="hero">
               <div className="hero-content">
-                <h1>Good morning, Omendra <Sun className="sun" size={29}/></h1>
+                <h1>Good morning, Omendra <Sun className="sun" size={29} /></h1>
                 <p>Let's build a stronger workplace together.</p>
                 <div className="motto"><div><span>INNOVATE.</span><small>Better People</small></div><div><span>ENGINEER.</span><small>Better Teams</small></div><div><span>TRANSFORM.</span><small>A Brighter Tomorrow</small></div></div>
               </div>
@@ -108,24 +114,24 @@ export default function App() {
                 ["Pending Requests", 2, FileText, "blue", "Needs your approval →"]
               ].map(([title, value, Icon, color, note]) => (
                 <article className="stat-card" key={title}>
-                  <div className={`stat-icon ${color}`}><Icon size={24}/></div>
+                  <div className={`stat-icon ${color}`}><Icon size={24} /></div>
                   <div className="stat-info"><span>{title}</span><div className="stat-number">{value}</div><small className="muted">{note}</small></div>
                 </article>
               ))}
             </section>
 
             <section className="employee-panel">
-              <div className="employee-heading"><div><h2>{active === "Dashboard" ? "Employees" : active}</h2><p>Manage your team, view details, and take action.</p></div><button className="primary-btn" onClick={() => {const name = prompt("Enter employee name"); if(name?.trim()) setEmployees(old => [...old, [name.trim(), "Others", "Active"]]);}}><Plus size={18}/> Add Employee</button></div>
+              <div className="employee-heading"><div><h2>{active === "Dashboard" ? "Employees" : active}</h2><p>Manage your team, view details, and take action.</p></div><button className="primary-btn" onClick={() => { const name = prompt("Enter employee name"); if (name?.trim()) setEmployees(old => [...old, [name.trim(), "Others", "Active"]]); }}><Plus size={18} /> Add Employee</button></div>
               <div className="filters">
-                <div className="table-search"><Search size={17}/><input placeholder="Search by name..." value={query} onChange={e => setQuery(e.target.value)}/></div>
+                <div className="table-search"><Search size={17} /><input placeholder="Search by name..." value={query} onChange={e => setQuery(e.target.value)} /></div>
                 <select value={department} onChange={e => setDepartment(e.target.value)}><option>All Departments</option>{departments.map(([name]) => <option key={name}>{name}</option>)}</select>
                 <select value={status} onChange={e => setStatus(e.target.value)}><option>All Status</option><option>Active</option><option>On Leave</option></select>
-                <button className="sort-btn" onClick={() => setEmployees(old => [...old].reverse())}><ArrowUpDown size={14}/> Sort</button>
+                <button className="sort-btn" onClick={() => setEmployees(old => [...old].reverse())}><ArrowUpDown size={14} /> Sort</button>
               </div>
               <div className="table-wrap"><table>
                 <thead><tr><th>#</th><th>Name</th><th>Department</th><th>Role</th><th>Status</th><th>Joining Date</th><th>Actions</th></tr></thead>
-                <tbody>{filtered.map(([name, dept, state], i) => <tr key={name}><td>{i+1}</td><td><div className="employee-name"><Avatar name={name}/>{name}</div></td><td className="muted">{dept}</td><td className="muted">—</td><td><span className={`status ${state === "Active" ? "active" : "leave"}`}>● &nbsp;{state}</span></td><td className="muted">—</td><td><button className="more-btn" onClick={() => {if(confirm(`Remove ${name} from this demo?`)) setEmployees(old => old.filter(e => e[0] !== name));}}><MoreHorizontal size={18}/></button></td></tr>)}
-                {filtered.length === 0 && <tr><td colSpan="7" className="empty">No matching employees found.</td></tr>}</tbody>
+                <tbody>{filtered.map(([name, dept, state], i) => <tr key={name}><td>{i + 1}</td><td><div className="employee-name"><Avatar name={name} />{name}</div></td><td className="muted">{dept}</td><td className="muted">—</td><td><span className={`status ${state === "Active" ? "active" : "leave"}`}>● &nbsp;{state}</span></td><td className="muted">—</td><td><button className="more-btn" onClick={() => { if (confirm(`Remove ${name} from this demo?`)) setEmployees(old => old.filter(e => e[0] !== name)); }}><MoreHorizontal size={18} /></button></td></tr>)}
+                  {filtered.length === 0 && <tr><td colSpan="7" className="empty">No matching employees found.</td></tr>}</tbody>
               </table></div>
               <div className="pagination"><span>Showing {filtered.length} employees</span><span>Page 1</span></div>
             </section>
@@ -133,13 +139,13 @@ export default function App() {
 
           <aside className="right-column">
             <Panel title="Department Overview" icon={Building2} action="›">
-              <div className="department-content"><div className="donut"><div><b>19</b><span>Employees</span></div></div><div className="legend">{departments.map(([name, percent, color]) => <div key={name}><i style={{background:color}}/><span>{name}</span><b>{percent}%</b></div>)}</div></div>
+              <div className="department-content"><div className="donut"><div><b>19</b><span>Employees</span></div></div><div className="legend">{departments.map(([name, percent, color]) => <div key={name}><i style={{ background: color }} /><span>{name}</span><b>{percent}%</b></div>)}</div></div>
             </Panel>
             <Panel title="Upcoming Birthdays" icon={Cake}>
-              <div className="activity-list">{[["Omendra Singh","12 May",25],["Swathi Kaviti","3 Jun",26],["Meghana Rayabagi","18 Jun",27],["Gidituri Harika","25 Jun",26]].map(([name,date,age]) => <div className="birthday-row" key={name}><Avatar name={name}/><div className="activity-text"><b>{name}</b><span>{date}</span></div><small>Turns {age}</small></div>)}</div>
+              <div className="activity-list">{[["Omendra Singh", "12 May", 25], ["Swathi Kaviti", "3 Jun", 26], ["Meghana Rayabagi", "18 Jun", 27], ["Gidituri Harika", "25 Jun", 26]].map(([name, date, age]) => <div className="birthday-row" key={name}><Avatar name={name} /><div className="activity-text"><b>{name}</b><span>{date}</span></div><small>Turns {age}</small></div>)}</div>
             </Panel>
             <Panel title="Recent Activity" icon={Zap}>
-              <div className="activity-list">{[["Tata Shalini","Updated profile details","2 hours ago"],["Omendra Singh","Marked attendance","4 hours ago"],["Katru Ramya Sri","Submitted leave request","6 hours ago"],["Akshaya Palogani","Updated profile details","8 hours ago"]].map(([name,detail,time]) => <div className="activity-row" key={name}><Avatar name={name}/><div className="activity-text"><b>{name}</b><span>{detail}</span></div><small>{time}</small></div>)}</div>
+              <div className="activity-list">{[["Tata Shalini", "Updated profile details", "2 hours ago"], ["Omendra Singh", "Marked attendance", "4 hours ago"], ["Katru Ramya Sri", "Submitted leave request", "6 hours ago"], ["Akshaya Palogani", "Updated profile details", "8 hours ago"]].map(([name, detail, time]) => <div className="activity-row" key={name}><Avatar name={name} /><div className="activity-text"><b>{name}</b><span>{detail}</span></div><small>{time}</small></div>)}</div>
             </Panel>
           </aside>
         </div>

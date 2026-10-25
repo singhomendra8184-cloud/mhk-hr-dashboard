@@ -4,3 +4,19 @@
 @media(max-width:1250px){.sidebar{width:195px;padding-left:12px;padding-right:12px}.main{padding:18px 12px}.dashboard-grid{grid-template-columns:minmax(0,1fr) 265px}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{flex-wrap:wrap}.table-search{min-width:150px}.hero h1{font-size:29px}.date-card{min-width:150px}}
 @media(max-width:900px){.sidebar{width:66px;padding:22px 8px 14px}.brand{justify-content:center;padding:0}.brand span,.brand-mark,.tagline,.nav-item span,.profile>div,.profile>svg{display:none}.brand strong{font-size:23px}.nav-item{justify-content:center;padding:13px 0}.profile{justify-content:center;padding:7px 0}.dashboard-grid{grid-template-columns:1fr}.right-column{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.right-column .panel:last-child{grid-column:1/-1}.date-card{display:none}}
 @media(max-width:600px){.main{padding:10px 7px}.topbar{gap:6px}.global-search{padding:0 9px}.global-search input{font-size:11px}.global-search kbd{display:none}.icon-btn{width:37px;height:42px}.hero-content{padding:17px 12px}.hero h1{font-size:24px}.hero p{font-size:13px}.motto{gap:8px;flex-wrap:wrap}.motto>div{padding-right:8px}.motto span{letter-spacing:1px;font-size:8px}.motto small{font-size:9px}.stats-grid{gap:6px}.stat-card{padding:9px 6px;gap:6px}.stat-icon{width:31px;height:34px}.stat-icon svg{width:17px}.stat-info>span{font-size:9px}.stat-number{font-size:24px}.stat-info .muted{font-size:9px}.employee-panel{padding:10px 7px}.employee-heading h2{font-size:22px}.employee-heading p{font-size:11px}.primary-btn{font-size:9px;padding:8px 6px}.filters select,.sort-btn{flex:1;max-width:none}.table-search{flex-basis:100%}.right-column{grid-template-columns:1fr}.right-column .panel:last-child{grid-column:auto}.department-content{grid-template-columns:130px 1fr}}
+
+.brand-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 12px 0 14px;
+}
+
+.mhk-logo {
+  display: block;
+  width: 180px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
