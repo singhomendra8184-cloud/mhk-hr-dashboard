@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Users, CalendarCheck, ClipboardList,
   Building2, ChartNoAxesColumn, Settings, Search, Bell,
   Moon, Sun, Plus, Plane, FileText, Cake, Zap,
-  ChevronRight, MoreHorizontal, ArrowUpDown
+  ChevronRight, MoreHorizontal, ArrowUpDown, Bot, X, Send, MessageCircle
 } from "lucide-react";
 import "./App.css";
 
@@ -44,6 +44,71 @@ function Panel({ title, icon: Icon, children, action = "View all" }) {
       </div>
       {children}
     </section>
+  );
+}
+
+function AIChatbot({ employees, departments }) {
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [messages, setMessages] = useState([
+    { role: "assistant", content: "Hi! I'm the MHK AI Assistant. Ask me about the dashboard, departments, attendance, or general HR topics." }
+  ]);
+
+  async function sendMessage(event) {
+    event?.preventDefault();
+    const text = input.trim();
+    if (!text || busy) return;
+    const nextMessages = [...messages, { role: "user", content: text }];
+    setMessages(nextMessages);
+    setInput("");
+    setBusy(true);
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: nextMessages.slice(-12).map(({ role, content }) => ({ role, content })),
+          context: {
+            employees: employees.map(([name, department, status]) => ({ name, department, status })),
+            departments: departments.map(([name, percentage]) => ({ name, percentage }))
+          }
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "The assistant could not respond.");
+      setMessages(current => [...current, { role: "assistant", content: data.reply }]);
+    } catch (error) {
+      setMessages(current => [...current, { role: "assistant", content: `Sorry, I couldn't respond. ${error.message} Check that the API is configured and the site is deployed on Vercel.` }]);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <>
+      {open && <section className="ai-chat-panel" aria-label="MHK AI Assistant">
+        <header className="ai-chat-header">
+          <div className="ai-chat-avatar"><Bot size={21} /></div>
+          <div className="ai-chat-heading"><strong>MHK AI Assistant</strong><small><span className="ai-status-dot" /> AI assistant</small></div>
+          <button className="ai-chat-close" onClick={() => setOpen(false)} aria-label="Close chat"><X size={19} /></button>
+        </header>
+        <div className="ai-chat-messages" aria-live="polite">
+          {messages.map((message, index) => <div key={`${index}-${message.role}`} className={`ai-chat-message ${message.role === "user" ? "user" : "assistant"}`}>
+            {message.content}
+          </div>)}
+          {busy && <div className="ai-chat-message assistant ai-chat-typing">Thinking…</div>}
+        </div>
+        <form className="ai-chat-form" onSubmit={sendMessage}>
+          <input value={input} onChange={event => setInput(event.target.value)} placeholder="Ask an HR question…" aria-label="Message the AI assistant" maxLength={2000} disabled={busy} />
+          <button type="submit" disabled={busy || !input.trim()} aria-label="Send message"><Send size={17} /></button>
+        </form>
+        <div className="ai-chat-disclaimer">AI can make mistakes. Verify important HR decisions.</div>
+      </section>}
+      <button className="ai-chat-launcher" onClick={() => setOpen(value => !value)} aria-label={open ? "Close AI chat" : "Open AI chat"}>
+        {open ? <X size={24} /> : <><MessageCircle size={22} /><span>Ask AI</span></>}
+      </button>
+    </>
   );
 }
 
@@ -94,7 +159,7 @@ export default function App() {
           <button className="icon-btn" aria-label="Notifications"><Bell size={20} /><i /></button>
           <button className="icon-btn" onClick={() => setDark(!dark)} aria-label="Toggle theme">{dark ? <Sun size={20} /> : <Moon size={20} />}</button>
           <div className="date-card"><b>Fri, 23 Oct 2026</b><span>Have a productive day!</span></div>
-          </header>
+        </header>
 
         <div className="dashboard-grid">
           <div className="center-column">
@@ -150,6 +215,7 @@ export default function App() {
           </aside>
         </div>
       </main>
+      <AIChatbot employees={employees} departments={departments} />
     </div>
   );
 }
